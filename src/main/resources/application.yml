@@ -13,6 +13,7 @@ server:
   port: 8082
 eureka:
   instance:
+    ip-address: 158.23.81.168
     instance-id: ${spring.application.name}:${random.value}
     prefer-ip-address: true
   client:
