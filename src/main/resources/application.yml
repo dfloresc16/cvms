@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: cv
+  datasource:
+    url: jdbc:sqlserver://upiita-pt.database.windows.net:1433;database=microserviciosPT;user=upiita@upiita-pt;password=Ipn2024!;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    username: upiita
+    password: 'Ipn2024!'
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8082
+eureka:
+  instance:
+    instance-id: ${spring.application.name}:${random.value}
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://158.23.81.168:8761/eureka
+#http://host.docker.internal:8761/eureka
+#jdbc:sqlserver://pt-server1.database.windows.net:1433;database=usersms;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net
