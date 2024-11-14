@@ -72,11 +72,11 @@ public class CVServiceImpl implements CVService{
         cvJoinFieldDTO.setUserId(userId);
         cvJoinFieldDTO.setCvFieldsDTOs(cvDB.getCVFieldsDTOS());
 
-        /*try {
+        try {
             kafkaTemplate.send("cvFieldsPublishJSON",mapper.writeValueAsString(cvJoinFieldDTO));
         } catch (JsonProcessingException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al parsear los campos del CV");
-        }*/
+        }
         return new CurriculumVitaeDTO(cvDB.getUserId(), cvDB.getToken(), cvDB.getCVFieldsDTOS());
     }
 
@@ -102,11 +102,11 @@ public class CVServiceImpl implements CVService{
         CVJoinFieldDTO cvJoinFieldDTO = new CVJoinFieldDTO();
         cvJoinFieldDTO.setUserId(userId);
         cvJoinFieldDTO.setCvFieldsDTOs(cvDB.getCVFieldsDTOS());
-        /*try {
+        try {
             kafkaTemplate.send("cvFieldsPublishJSON",mapper.writeValueAsString(cvJoinFieldDTO));
         } catch (JsonProcessingException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al parsear los campos del CV");
-        }*/
+        }
         return new CurriculumVitaeDTO(cvDB.getUserId(), cvDB.getToken(), cvDB.getCVFieldsDTOS());
     }
 
