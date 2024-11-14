@@ -41,12 +41,12 @@ public class CVController extends CommonController {
         }
     }
 
-    @PostMapping("/createCV")
-    public ResponseEntity<GenericResponseDTO<CurriculumVitaeDTO>> createCV(@Valid @RequestBody CurriculumVitaeDTO cvDTO){
+    @PostMapping("/createCV/{user_id}")
+    public ResponseEntity<GenericResponseDTO<CurriculumVitaeDTO>> createCV(@Valid @RequestBody CurriculumVitaeDTO cvDTO, @PathVariable Long user_id){
         try{
             logger.info("Execute createCV() " );
             return ResponseEntity.ok().body(new GenericResponseDTO<>(
-                    CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.createCV(cvDTO)));
+                    CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.createCV(cvDTO, user_id)));
         }catch(ResponseStatusException ex){
             logger.error("Exception: " + ex.getMessage());
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.toString(),
@@ -58,12 +58,12 @@ public class CVController extends CommonController {
         }
     }
 
-    @GetMapping("/getDataCV/{cv_id}")
-    public ResponseEntity<GenericResponseDTO<CurriculumVitaeDTO>> getDataCV(@PathVariable Long cv_id){
+    @GetMapping("/getDataCV/{user_id}")
+    public ResponseEntity<GenericResponseDTO<CurriculumVitaeDTO>> getDataCV(@PathVariable Long user_id){
         try{
             logger.info("Execute getDataCV() " );
             return ResponseEntity.ok().body(new GenericResponseDTO<>(
-                    CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.filtrar(cv_id)));
+                    CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.filtrar(user_id)));
         }catch(ResponseStatusException ex){
             logger.error("Exception: " + ex.getMessage());
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.toString(),
@@ -75,11 +75,11 @@ public class CVController extends CommonController {
         }
     }
 
-    @DeleteMapping("/deleteCV/{cv_id}")
-    public ResponseEntity<GenericResponseDTO<?>> deleteCV(@PathVariable Long cv_id){
+    @DeleteMapping("/deleteCV/{user_id}")
+    public ResponseEntity<GenericResponseDTO<?>> deleteCV(@PathVariable Long user_id){
         try{
             logger.info("Execute deleteCV() " );
-            cvService.deleteCV(cv_id);
+            cvService.deleteCV(user_id);
             return ResponseEntity.ok().body(new GenericResponseDTO<>(
                     CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,null));
         }catch(ResponseStatusException ex){
@@ -93,12 +93,12 @@ public class CVController extends CommonController {
         }
     }
 
-    @PutMapping("/updateCV/{cv_id}")
-    public ResponseEntity<GenericResponseDTO<CurriculumVitaeDTO>> updateCV(@Valid @RequestBody CurriculumVitaeDTO cvDTO, @PathVariable long cv_id){
+    @PutMapping("/updateCV/{user_id}")
+    public ResponseEntity<GenericResponseDTO<CurriculumVitaeDTO>> updateCV(@Valid @RequestBody CurriculumVitaeDTO cvDTO, @PathVariable long user_id){
         try{
             logger.info("Execute updateCV()" );
             return ResponseEntity.ok().body(new GenericResponseDTO<>(
-                    CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.updateCV(cvDTO,cv_id)));
+                    CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.updateCV(cvDTO,user_id)));
         }catch(ResponseStatusException ex){
             logger.error("Exception: " + ex.getMessage());
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.toString(),
@@ -110,12 +110,12 @@ public class CVController extends CommonController {
         }
     }
 
-    @GetMapping("/getCVFields/{cv_id}")
-    public ResponseEntity<GenericResponseDTO<CVJoinFieldDTO>> getCVFieldsByCVId(@PathVariable Long cv_id){
+    @GetMapping("/getCVFields/{user_id}")
+    public ResponseEntity<GenericResponseDTO<CVJoinFieldDTO>> getCVFieldsByCVId(@PathVariable Long user_id){
         try{
             logger.info("Execute getCVFields() " );
             return ResponseEntity.ok().body(new GenericResponseDTO<>(
-                    CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.getCVJoinField(cv_id)));
+                    CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.getCVJoinField(user_id)));
         }catch(ResponseStatusException ex){
             logger.error("Exception: " + ex.getMessage());
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.toString(),

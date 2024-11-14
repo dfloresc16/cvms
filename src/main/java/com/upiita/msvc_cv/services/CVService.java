@@ -10,7 +10,7 @@ public interface CVService {
 
     CurriculumVitaeDTO filtrar(Long cv_id);
 
-    CurriculumVitaeDTO createCV(CurriculumVitaeDTO cv);
+    CurriculumVitaeDTO createCV(CurriculumVitaeDTO cv, Long userId);
 
     void deleteCV(Long id);
 

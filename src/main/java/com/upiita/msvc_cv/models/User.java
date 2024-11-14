@@ -1,5 +1,7 @@
 package com.upiita.msvc_cv.models;
 
+import jakarta.persistence.*;
+
 public class User {
     private Long user_id;
     private String username;
@@ -8,12 +10,9 @@ public class User {
     private String lastName;
     private String studentLicense;
     private String phonenumber;
-
     private String pasword;
-
     public User() {
     }
-
     public Long getUser_id() {
         return user_id;
     }

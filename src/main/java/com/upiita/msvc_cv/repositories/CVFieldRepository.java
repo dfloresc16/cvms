@@ -9,6 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface CVFieldRepository extends CrudRepository<CVField, Long> {
     @Modifying
     @Transactional
-    @Query("DELETE FROM CVField cf WHERE cf.cv.cvId = ?1")
-    void deleteCVFieldsByCVId_query(Long cv_id);
+    @Query("DELETE FROM CVField cf WHERE cf.cv.userId = ?1")
+    void deleteCVFieldsByUserId_query(Long userId);
 }

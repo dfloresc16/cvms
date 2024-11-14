@@ -45,53 +45,53 @@ public class CVServiceImpl implements CVService{
     public List<CurriculumVitaeDTO> listar() {
         List<CurriculumVitae> cvs = (List<CurriculumVitae>) cvRepository.findAll();
         List<CurriculumVitaeDTO> cvDTOs = new ArrayList<>();
-        cvs.stream().forEach(cv -> cvDTOs.add(new CurriculumVitaeDTO(cv.getCvId(),cv.getToken(),cv.getCVFieldsDTOS())));
+        cvs.stream().forEach(cv -> cvDTOs.add(new CurriculumVitaeDTO(cv.getUserId() ,cv.getToken(),cv.getCVFieldsDTOS())));
         return cvDTOs;
     }
 
 
     @Override
     @Transactional(readOnly = true)
-    public CurriculumVitaeDTO filtrar(Long cv_id) {
-        CurriculumVitae cv = cvRepository.findByCvId(cv_id).
+    public CurriculumVitaeDTO filtrar(Long user_id) {
+        CurriculumVitae cv = cvRepository.findByUserId(user_id).
                 orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        CurriculumVitaeDTO cvDTO = new CurriculumVitaeDTO(cv.getCvId(),cv.getToken(),cv.getCVFieldsDTOS());
+        CurriculumVitaeDTO cvDTO = new CurriculumVitaeDTO(cv.getUserId(), cv.getToken(),cv.getCVFieldsDTOS());
         return cvDTO;
     }
 
     @Override
     @Transactional
-    public CurriculumVitaeDTO createCV(CurriculumVitaeDTO cvDTO) {
+    public CurriculumVitaeDTO createCV(CurriculumVitaeDTO cvDTO, Long userId) {
         CurriculumVitae cv = new CurriculumVitae();
-        //cv.setCvId(cvDTO.getCvId());
         cv.setToken(cvDTO.getToken());
+        cv.setUserId(userId);
         List<CVField> cvFields = getCVFieldsfromDTO(cvDTO);
         cv.setCvFields(cvFields);
         CurriculumVitae cvDB = cvRepository.save(cv);
         CVJoinFieldDTO cvJoinFieldDTO = new CVJoinFieldDTO();
-        cvJoinFieldDTO.setCvId(cvDB.getCvId());
+        cvJoinFieldDTO.setUserId(userId);
         cvJoinFieldDTO.setCvFieldsDTOs(cvDB.getCVFieldsDTOS());
 
-        try {
+        /*try {
             kafkaTemplate.send("cvFieldsPublishJSON",mapper.writeValueAsString(cvJoinFieldDTO));
         } catch (JsonProcessingException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al parsear los campos del CV");
-        }
-        return new CurriculumVitaeDTO(cvDB.getCvId(), cvDB.getToken(), cvDB.getCVFieldsDTOS());
+        }*/
+        return new CurriculumVitaeDTO(cvDB.getUserId(), cvDB.getToken(), cvDB.getCVFieldsDTOS());
     }
 
     @Override
     @Transactional
     public void deleteCV(Long id) {
-        cvRepository.deleteById(id);
+        cvRepository.deleteByUserId(id);
     }
 
     @Override
     @Transactional
-    public CurriculumVitaeDTO updateCV(CurriculumVitaeDTO cvDTO, long cv_id) {
-        CurriculumVitae cv = cvRepository.findByCvId(cv_id).
+    public CurriculumVitaeDTO updateCV(CurriculumVitaeDTO cvDTO, long userId) {
+        CurriculumVitae cv = cvRepository.findByUserId(userId).
                 orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-        cvFieldRepository.deleteCVFieldsByCVId_query(cv_id);
+        cvFieldRepository.deleteCVFieldsByUserId_query(userId);
         List<CVField> cvFields = getCVFieldsfromDTO(cvDTO);
         logger.info(cvFields.stream().toList().toString());
         cv.getCvFields().clear();
@@ -100,25 +100,25 @@ public class CVServiceImpl implements CVService{
         CurriculumVitae cvDB =  cvRepository.save(cv);
         logger.info("save");
         CVJoinFieldDTO cvJoinFieldDTO = new CVJoinFieldDTO();
-        cvJoinFieldDTO.setCvId(cvDB.getCvId());
+        cvJoinFieldDTO.setUserId(userId);
         cvJoinFieldDTO.setCvFieldsDTOs(cvDB.getCVFieldsDTOS());
-        try {
+        /*try {
             kafkaTemplate.send("cvFieldsPublishJSON",mapper.writeValueAsString(cvJoinFieldDTO));
         } catch (JsonProcessingException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al parsear los campos del CV");
-        }
-        return new CurriculumVitaeDTO(cvDB.getCvId(),cvDB.getToken(), cvDB.getCVFieldsDTOS());
+        }*/
+        return new CurriculumVitaeDTO(cvDB.getUserId(), cvDB.getToken(), cvDB.getCVFieldsDTOS());
     }
 
     @Override
-    public CVJoinFieldDTO getCVJoinField(Long cv_id){
-        CurriculumVitae cv = cvRepository.findByCvId(cv_id).
+    public CVJoinFieldDTO getCVJoinField(Long userId){
+        CurriculumVitae cv = cvRepository.findByUserId(userId).
                 orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         CVJoinFieldDTO cvJoinFieldDTO = new CVJoinFieldDTO();
         /*List<String> cvFields = getCVFieldsByCVId(cv);
         List<String> cvLevels = getCVLevelsByCVId(cv);
         List<String> cvCategories = getCVCategoriesByCVId(cv);*/
-        cvJoinFieldDTO.setCvId(cv_id);
+        cvJoinFieldDTO.setUserId(userId);
         cvJoinFieldDTO.setCvFieldsDTOs(cv.getCVFieldsDTOS());
         return cvJoinFieldDTO;
     }

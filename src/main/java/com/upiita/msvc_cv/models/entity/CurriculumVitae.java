@@ -27,14 +27,13 @@ public class CurriculumVitae {
     //@Transient
     private List<CVField> cvFields;
 
-    @Transient
-    private User user;
+    @NotNull
+    private Long userId;
 
     private static Logger logger = LoggerFactory.getLogger(CurriculumVitae.class);
 
     public CurriculumVitae() {
         this.cvFields = new ArrayList<>();
-        this.user = new User();
     }
 
     public Long getCvId() {
@@ -51,14 +50,6 @@ public class CurriculumVitae {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
     }
 
     public List<CVField> getCvFields() {
@@ -91,4 +82,19 @@ public class CurriculumVitae {
         return cvFieldsDTOs;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public static Logger getLogger() {
+        return logger;
+    }
+
+    public static void setLogger(Logger logger) {
+        CurriculumVitae.logger = logger;
+    }
 }

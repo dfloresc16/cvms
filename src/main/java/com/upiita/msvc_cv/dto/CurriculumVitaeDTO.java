@@ -4,17 +4,9 @@ package com.upiita.msvc_cv.dto;
 import java.util.List;
 
 public class CurriculumVitaeDTO {
-    private Long cvId;
+    private Long userId;
     private String token;
     private List<CVFieldDTO> cvFieldsDTOs;
-
-    public Long getCvId() {
-        return cvId;
-    }
-
-    public void setCvId(Long cvId) {
-        this.cvId = cvId;
-    }
 
     public String getToken() {
         return token;
@@ -32,8 +24,16 @@ public class CurriculumVitaeDTO {
         this.cvFieldsDTOs = cvFieldsDTOs;
     }
 
-    public CurriculumVitaeDTO(Long cvId, String token, List<CVFieldDTO> cvFieldsDTOs) {
-        this.cvId = cvId;
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public CurriculumVitaeDTO(Long userId, String token, List<CVFieldDTO> cvFieldsDTOs) {
+        this.userId = userId;
         this.token = token;
         this.cvFieldsDTOs = cvFieldsDTOs;
     }
