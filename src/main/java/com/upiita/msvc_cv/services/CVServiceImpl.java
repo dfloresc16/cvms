@@ -111,15 +111,31 @@ public class CVServiceImpl implements CVService{
     }
 
     @Override
-    public CVJoinFieldDTO getCVJoinField(Long userId){
+    public CVJoinFieldDTO getCVJoinField(Long userId) {
+        logger.info("Starting getCVJoinField for userId: {}", userId);
+
         CurriculumVitae cv = cvRepository.findFirstByUserId(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curriculum Vitae not found"));
+                .orElseThrow(() -> {
+                    logger.error("Curriculum Vitae not found for userId: {}", userId);
+                    return new ResponseStatusException(HttpStatus.NOT_FOUND, "Curriculum Vitae not found");
+                });
+
+        logger.info("Curriculum Vitae found for userId: {}", userId);
+
         CVJoinFieldDTO cvJoinFieldDTO = new CVJoinFieldDTO();
-        /*List<String> cvFields = getCVFieldsByCVId(cv);
-        List<String> cvLevels = getCVLevelsByCVId(cv);
-        List<String> cvCategories = getCVCategoriesByCVId(cv);*/
-        cvJoinFieldDTO.setUserId(userId);
-        cvJoinFieldDTO.setCvFieldsDTOs(cv.getCVFieldsDTOS());
+
+        try {
+            // Aquí puedes añadir más logs para el proceso, si es necesario
+            logger.debug("Populating CVJoinFieldDTO for userId: {}", userId);
+            
+            cvJoinFieldDTO.setUserId(userId);
+            cvJoinFieldDTO.setCvFieldsDTOs(cv.getCVFieldsDTOS());
+
+            logger.info("CVJoinFieldDTO populated successfully for userId: {}", userId);
+        } catch (Exception e) {
+            logger.error("Error occurred while processing CVJoinFieldDTO for userId: {}. Error: {}", userId, e.getMessage(), e);
+        }
+
         return cvJoinFieldDTO;
     }
 

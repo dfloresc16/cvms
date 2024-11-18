@@ -31,11 +31,11 @@ public class CVController extends CommonController {
             return ResponseEntity.ok().body(new GenericResponseDTO<>(
                     CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.listar()));
         }catch(ResponseStatusException ex){
-            logger.error("Exception: " + ex.getMessage());
+            logger.error("Exception: ", ex);
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.NOT_FOUND);
         }catch(Exception ex){
-            logger.error("Exception: " + ex.getMessage());
+            logger.error("Exception: ", ex);
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -48,11 +48,11 @@ public class CVController extends CommonController {
             return ResponseEntity.ok().body(new GenericResponseDTO<>(
                     CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.createCV(cvDTO, user_id)));
         }catch(ResponseStatusException ex){
-            logger.error("Exception: " + ex.getMessage());
+            logger.error("Exception: ",ex);
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.NOT_FOUND);
         }catch(Exception ex){
-            logger.error("Exception: " + ex.getMessage());
+            logger.error("Exception: ", ex);
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -65,11 +65,11 @@ public class CVController extends CommonController {
             return ResponseEntity.ok().body(new GenericResponseDTO<>(
                     CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.filtrar(user_id)));
         }catch(ResponseStatusException ex){
-            logger.error("Exception: " + ex.getMessage());
+            logger.error("Exception: ", ex);
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.NOT_FOUND);
         }catch(Exception ex){
-            logger.error("Exception: " + ex.getMessage());
+            logger.error("Exception: ", ex);
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -83,11 +83,11 @@ public class CVController extends CommonController {
             return ResponseEntity.ok().body(new GenericResponseDTO<>(
                     CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,null));
         }catch(ResponseStatusException ex){
-            logger.error("Exception: " + ex.getMessage());
+            logger.error("Exception: ",ex);
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.NOT_FOUND);
         }catch(Exception ex){
-            logger.error("Exception: " + ex.getMessage());
+            logger.error("Exception: ", ex);
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -104,7 +104,7 @@ public class CVController extends CommonController {
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.NOT_FOUND);
         }catch(Exception ex){
-            logger.error("Exception: " + ex.getMessage());
+            logger.error("Exception: ",ex);
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -117,11 +117,11 @@ public class CVController extends CommonController {
             return ResponseEntity.ok().body(new GenericResponseDTO<>(
                     CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.getCVJoinField(user_id)));
         }catch(ResponseStatusException ex){
-            logger.error("Exception: " + ex.getMessage());
+            logger.error("Exception: ", ex);
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.NOT_FOUND);
         }catch(Exception ex){
-            logger.error("Exception: " + ex.getMessage());
+            logger.error("Exception: ", ex);
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.INTERNAL_SERVER_ERROR);
         }
