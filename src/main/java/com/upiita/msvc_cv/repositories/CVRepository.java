@@ -9,6 +9,8 @@ public interface CVRepository extends CrudRepository<CurriculumVitae, Long> {
     Optional<CurriculumVitae> findByCvId(Long cv_id);
 
     Optional<CurriculumVitae> findByUserId(Long userId);
+    
+    Optional<CurriculumVitae> findFirstByUserId(Long userId);
 
     void deleteByUserId(Long userId);
 }
