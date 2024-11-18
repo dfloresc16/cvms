@@ -112,8 +112,10 @@ public class CVServiceImpl implements CVService{
 
     @Override
     public CVJoinFieldDTO getCVJoinField(Long userId){
-        CurriculumVitae cv = cvRepository.findByUserId(userId).
-                orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        CurriculumVitae cv = cvRepository.findByUserId(userId)
+                .stream() // Convierte el Optional en un Stream
+                .findFirst() // Toma el primer elemento si existe
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Curriculum Vitae not found"));
         CVJoinFieldDTO cvJoinFieldDTO = new CVJoinFieldDTO();
         /*List<String> cvFields = getCVFieldsByCVId(cv);
         List<String> cvLevels = getCVLevelsByCVId(cv);
