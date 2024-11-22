@@ -100,7 +100,7 @@ public class CVController extends CommonController {
             return ResponseEntity.ok().body(new GenericResponseDTO<>(
                     CommonController.SUCCESS, HttpStatus.OK.value(), null, null, null,cvService.updateCV(cvDTO,user_id)));
         }catch(ResponseStatusException ex){
-            logger.error("Exception: " + ex.getMessage());
+            logger.error("Exception: " , ex);
             return new ResponseEntity<>(new GenericResponseDTO<>(ERROR, HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND.toString(),
                     ex.getMessage(), "service execute", null), HttpStatus.NOT_FOUND);
         }catch(Exception ex){
