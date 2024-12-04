@@ -19,6 +19,7 @@ public class CurriculumVitae {
     private Long cvId;
 
     @NotNull
+    @Column(columnDefinition = "TEXT")
     private String token;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)

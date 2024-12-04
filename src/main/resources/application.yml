@@ -27,5 +27,8 @@ eureka:
     register-with-eureka: true
     service-url:
       defaultZone: http://158.23.81.1:8761/eureka
+jwt:
+  secret: 357638792F423F4421472B4B6250655368566D597133743677397A2443264629
+
 #http://host.docker.internal:8761/eureka
 #jdbc:sqlserver://pt-server1.database.windows.net:1433;database=usersms;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net

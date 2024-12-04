@@ -3,6 +3,7 @@ package com.upiita.msvc_cv.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.upiita.msvc_cv.config.JwtProvider;
 import com.upiita.msvc_cv.kafka.KafkaConfiguration;
 import com.upiita.msvc_cv.repositories.CVFieldRepository;
 import com.upiita.msvc_cv.dto.CVFieldDTO;
@@ -36,6 +37,9 @@ public class CVServiceImpl implements CVService{
     @Autowired
     private KafkaTemplate<Integer, String> kafkaTemplate;
 
+    @Autowired
+    private JwtProvider jwtProvider;
+
     private static Logger logger = LoggerFactory.getLogger(CVServiceImpl.class);
 
     private ObjectMapper mapper = new ObjectMapper();
@@ -62,21 +66,23 @@ public class CVServiceImpl implements CVService{
     @Override
     @Transactional
     public CurriculumVitaeDTO createCV(CurriculumVitaeDTO cvDTO, Long userId) {
+
         CurriculumVitae cv = new CurriculumVitae();
-        cv.setToken(cvDTO.getToken());
         cv.setUserId(userId);
         List<CVField> cvFields = getCVFieldsfromDTO(cvDTO);
         cv.setCvFields(cvFields);
         CurriculumVitae cvDB = cvRepository.save(cv);
+        cvDB.setToken(jwtProvider.createToken(cv));
+        logger.info("cvId: " + cvDB.getCvId());
+        cvDB = cvRepository.save(cvDB);
         CVJoinFieldDTO cvJoinFieldDTO = new CVJoinFieldDTO();
         cvJoinFieldDTO.setUserId(userId);
         cvJoinFieldDTO.setCvFieldsDTOs(cvDB.getCVFieldsDTOS());
-
-        try {
+        /*try {
             kafkaTemplate.send("cvFieldsPublishJSON",mapper.writeValueAsString(cvJoinFieldDTO));
         } catch (JsonProcessingException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Error al parsear los campos del CV");
-        }
+        }*/
         return new CurriculumVitaeDTO(cvDB.getUserId(), cvDB.getToken(), cvDB.getCVFieldsDTOS());
     }
 
@@ -89,6 +95,11 @@ public class CVServiceImpl implements CVService{
     @Override
     @Transactional
     public CurriculumVitaeDTO updateCV(CurriculumVitaeDTO cvDTO, long userId) {
+        if(!validateUpdate(cvDTO.getToken())){
+            logger.info("No es válido actualizar el cv");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+        }
+        logger.info("Es váido actualizar el cv");
         CurriculumVitae cv = cvRepository.findByUserId(userId).
                 orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND));
         cvFieldRepository.deleteCVFieldsByUserId_query(userId);
@@ -99,6 +110,9 @@ public class CVServiceImpl implements CVService{
         logger.info(cv.getCvFields().stream().toList().toString());
         CurriculumVitae cvDB =  cvRepository.save(cv);
         logger.info("save");
+        cvDB.setToken(jwtProvider.createToken(cv));
+        logger.info("cvId: " + cvDB.getCvId());
+        cvDB = cvRepository.save(cvDB);
         CVJoinFieldDTO cvJoinFieldDTO = new CVJoinFieldDTO();
         cvJoinFieldDTO.setUserId(userId);
         cvJoinFieldDTO.setCvFieldsDTOs(cvDB.getCVFieldsDTOS());
@@ -170,5 +184,14 @@ public class CVServiceImpl implements CVService{
             cvFields.add(cvField);
         }
         return cvFields;
+    }
+
+    private boolean validateUpdate(String token){
+        try{
+            jwtProvider.validate(token);
+            return false;
+        }catch (Exception e){
+            return true;
+        }
     }
 }
