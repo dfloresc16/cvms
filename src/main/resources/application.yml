@@ -13,8 +13,8 @@ spring:
       properties:
         hibernate.format_sql: true
 logging:
-  level:
-    com.zaxxer.hikari: DEBUG
+  file:
+    name: ./logs/cvms-${date:yyyy-MM-dd}.log # Archivo con fecha en el nombre
 server:
   port: 8082
 eureka:
