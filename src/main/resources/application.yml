@@ -2,8 +2,8 @@ spring:
   application:
     name: cv
   datasource:
-    url: jdbc:sqlserver://upiita-pt.database.windows.net:1433;database=microserviciosPT;user=upiita@upiita-pt;password=Ipn2024!;encrypt=true;trustServerCertificate=false;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
-    username: upiita
+    url: jdbc:sqlserver://158.23.246.23:1433;database=microserviciosPT;encrypt=true;trustServerCertificate=true;hostNameInCertificate=*.database.windows.net;loginTimeout=30;
+    username: sa
     password: 'Ipn2024!'
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
   jpa:
